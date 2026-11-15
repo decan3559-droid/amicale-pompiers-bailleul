@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1,viewport-fit=cover"
+  />
+
+  <meta
+    name="theme-color"
+    content="#b5121b"
+  />
+
+  <title>
+    Amicale Sapeurs-Pompiers de Bailleul
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  />
+
+  <link
+    rel="icon"
+    type="image/x-icon"
+    href="assets/favicon-clean.ico"
+  >
+
+  <link
+    rel="apple-touch-icon"
+    href="assets/apple-touch-icon-clean.png"
+  >
+
+<link rel="manifest" href="/manifest.json">
+  
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+  ></script>
+
+</head>
+
+
+<body>
+
+  <div id="app">
+
+    <section
+      id="loginView"
+      class="login-view"
+    >
+
+      <div class="login-card">
+
+        <img
+          src="assets/logo.png"
+          class="logo login-logo"
+          alt="Logo Amicale Sapeurs-Pompiers de Bailleul"
+        />
+
+        <h1>
+          Amicale Sapeurs-Pompiers
+        </h1>
+
+        <p class="muted">
+          Bailleul
+        </p>
+
+        <div class="field">
+
+          <label for="accessCode">
+            Code d'accès
+          </label>
+
+          <input
+            id="accessCode"
+            type="password"
+            inputmode="text"
+            autocomplete="one-time-code"
+            placeholder="Votre code"
+          />
+
+        </div>
+
+     
+
+        <button
+          id="loginBtn"
+          class="primary full"
+        >
+          Se connecter
+        </button>
+
+        <p
+          id="loginError"
+          class="error"
+        ></p>
+
+        <p class="small muted">
+          Accès réservé aux membres de l'Amicale.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <section
+      id="mainView"
+      class="hidden"
+    >
+
+      <header class="topbar">
+
+        <div class="brand">
+
+          <img
+            src="assets/logo.png"
+            alt=""
+          />
+
+          <div>
+
+            <strong>
+              Amicale
+            </strong>
+
+            <span>
+              Sapeurs-Pompiers de Bailleul
+            </span>
+
+          </div>
+
+        </div>
+
+        <div class="top-actions">
+
+          <span
+            id="memberBadge"
+            class="badge"
+          ></span>
+
+          <button
+            id="logoutBtn"
+            class="ghost"
+          >
+            Déconnexion
+          </button>
+
+        </div>
+
+      </header>
+
+      <main>
+
+        <div
+          id="homeUser"
+          class="view"
+        ></div>
+
+        <div
+          id="homeAdmin"
+          class="view hidden"
+        ></div>
+
+      </main>
+
+    </section>
+
+  </div>
+
+<!-- =====================================================
+     PROPOSITION INSTALLATION APPLICATION
+     ===================================================== -->
+
+<div id="installAppBox" class="install-app-box hidden">
+
+  <div class="install-app-content">
+
+    <div class="install-app-icon">
+      <img
+        src="assets/icon-192-clean.png"
+        alt="Amicale Sapeurs-Pompiers"
+      >
+    </div>
+
+    <div class="install-app-text">
+
+      <strong>
+        Installer l'application
+      </strong>
+
+      <span>
+        Installez l'application Amicale Sapeurs-Pompiers
+        sur votre téléphone pour y accéder rapidement.
+      </span>
+
+    </div>
+
+    <div class="install-app-actions">
+
+      <button
+        id="installAppBtn"
+        class="primary"
+        type="button"
+      >
+        📱 Installer
+      </button>
+
+      <button
+        id="installLaterBtn"
+        class="ghost"
+        type="button"
+      >
+        Plus tard
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+  <script src="app.js?v=20260921-2"></script>
+
+</body>
+
+</html>

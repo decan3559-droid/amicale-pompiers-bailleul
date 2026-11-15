@@ -1,0 +1,1084 @@
+:root{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#1f2937;background:#e8eef6;--red:#b5121b;--dark:#171717;--card:#fff;--line:#e5e7eb;--muted:#6b7280}*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#f7f7f8,#eef0f3);min-height:100vh}.hidden{display:none!important}.login-view{min-height:100vh;display:grid;place-items:center;padding:22px}.login-card{width:min(430px,100%);background:#fff;border:1px solid var(--line);border-radius:24px;padding:30px;box-shadow:0 20px 55px #00000012;text-align:center}.logo{object-fit:contain}.login-logo{width:150px;height:150px;margin:auto auto 12px}.login-card h1{margin:5px 0 0;font-size:23px}.muted{color:var(--muted)}.small{font-size:12px}.field{text-align:left;margin:25px 0 14px}.field label{display:block;font-weight:700;margin-bottom:7px}.field input,.input,.textarea,.select{width:100%;border:1px solid #d1d5db;border-radius:12px;padding:13px 14px;font-size:16px;background:#fff}.textarea{min-height:120px;resize:vertical}.primary{background:var(--red);color:#fff;border:0;border-radius:12px;padding:13px 17px;font-weight:800;cursor:pointer}.primary:hover{filter:brightness(.95)}.full{width:100%}.ghost{border:1px solid var(--line);background:#fff;border-radius:10px;padding:9px 12px;cursor:pointer}.error{color:#b91c1c;min-height:20px}.topbar{height:74px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:10px max(18px,calc((100vw - 1200px)/2));position:sticky;top:0;z-index:5}.brand{display:flex;align-items:center;gap:10px}.brand img{width:50px;height:50px}.brand strong,.brand span{display:block}.brand span{font-size:11px;color:var(--muted)}.top-actions{display:flex;align-items:center;gap:10px}.badge{font-size:12px;background:#f3f4f6;border-radius:999px;padding:7px 10px}.view{max-width:1200px;margin:auto;padding:22px}.hero{background:var(--dark);color:#fff;border-radius:22px;padding:24px;margin-bottom:20px}.hero h2{margin:0 0 6px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:15px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 5px 20px #00000008}.card h3{margin:0 0 8px}.card p{margin:7px 0}.card button{margin-top:12px}.section-title{display:flex;justify-content:space-between;gap:12px;align-items:center;margin:24px 0 12px}.section-title h2,.section-title h3{margin:0}.stat{font-size:30px;font-weight:900}.row{display:flex;gap:10px;flex-wrap:wrap}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;background:#fff}.table th,.table td{padding:11px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}.table th{font-size:12px;color:var(--muted)}.modal{position:fixed;inset:0;background:#0008;display:grid;place-items:center;padding:18px;z-index:20}.modal-card{background:#fff;border-radius:20px;width:min(700px,100%);max-height:90vh;overflow:auto;padding:22px}.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.form-grid .full-col{grid-column:1/-1}.check{display:flex;align-items:center;gap:8px}.danger{color:#b91c1c}.success{color:#166534}.pill{display:inline-block;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:800;background:#f3f4f6}.event-card{display:flex;flex-direction:column}.event-card .actions{margin-top:auto}.idea{border-left:4px solid var(--red)}@media(max-width:650px){.topbar{height:auto;align-items:flex-start}.top-actions{flex-direction:column;align-items:flex-end}.brand span{max-width:160px}.view{padding:15px}.form-grid{grid-template-columns:1fr}.login-card{padding:24px}.table th,.table td{padding:9px;font-size:12px}}
+html,
+body{
+  background:#e8eef6;
+}
+
+/* =====================================================
+   MODALE DEMANDE DE PRÊT - NOUVEAU DESIGN
+   Apparence uniquement - aucun changement de fonctionnement
+   ===================================================== */
+
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  background:rgba(15,23,42,.68);
+  backdrop-filter:blur(4px);
+}
+
+.modal-overlay .modal{
+  width:min(720px,100%);
+  max-height:92vh;
+  overflow-y:auto;
+  background:#fff;
+  border-radius:22px;
+  box-shadow:0 25px 70px rgba(0,0,0,.30);
+  padding:0;
+  color:#172033;
+}
+
+.modal-overlay .modal h2{
+  margin:0;
+  padding:28px 32px 8px;
+  font-size:28px;
+  font-weight:800;
+  color:#172033;
+}
+
+.modal-overlay .modal h2:first-letter{
+  color:#c8102e;
+}
+
+.modal-overlay .modal > p{
+  margin:0;
+  padding:0 32px 20px;
+  color:#687386;
+  font-size:15px;
+}
+
+.modal-overlay .modal .field{
+  margin:0 32px 18px;
+}
+
+.modal-overlay .modal label{
+  display:block;
+  margin-bottom:8px;
+  font-weight:700;
+  color:#26344a;
+  font-size:15px;
+}
+
+.modal-overlay .modal .input,
+.modal-overlay .modal .textarea,
+.modal-overlay .modal input[type="datetime-local"]{
+  width:100%;
+  box-sizing:border-box;
+  border:1px solid #d5dce5;
+  border-radius:13px;
+  background:#fff;
+  color:#172033;
+  padding:14px 16px;
+  font-size:16px;
+  outline:none;
+  transition:.2s;
+}
+
+.modal-overlay .modal .textarea{
+  min-height:115px;
+  resize:vertical;
+}
+
+.modal-overlay .modal .input:focus,
+.modal-overlay .modal .textarea:focus,
+.modal-overlay .modal input[type="datetime-local"]:focus{
+  border-color:#c8102e;
+  box-shadow:0 0 0 3px rgba(200,16,46,.10);
+}
+
+.modal-overlay .modal .row{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:20px 32px 28px;
+  margin-top:8px;
+  border-top:1px solid #edf0f4;
+}
+
+.modal-overlay .modal .row button{
+  min-height:50px;
+  border-radius:13px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.modal-overlay .modal .row .primary{
+  flex:1;
+}
+
+.modal-overlay .modal .row .ghost{
+  min-width:130px;
+}
+
+.modal-overlay .modal > .material-preview{
+  margin:8px 32px 24px;
+  padding:20px;
+  border-radius:16px;
+  background:#f3f5f7;
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.material-preview-icon{
+  width:82px;
+  height:82px;
+  border-radius:13px;
+  background:#e4e8ed;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  flex-shrink:0;
+}
+
+.material-preview-info{
+  min-width:0;
+}
+
+.material-preview-info h3{
+  margin:0 0 6px;
+  font-size:21px;
+  color:#172033;
+}
+
+.material-preview-info p{
+  margin:4px 0;
+  color:#697589;
+}
+
+.material-quantity{
+  display:inline-block;
+  margin-left:5px;
+  padding:4px 10px;
+  border-radius:8px;
+  background:#ffd9df;
+  color:#c8102e;
+  font-weight:800;
+}
+
+@media(max-width:650px){
+  .modal-overlay{
+    padding:10px;
+    align-items:center;
+  }
+
+  .modal-overlay .modal{
+    max-height:95vh;
+    border-radius:18px;
+  }
+
+  .modal-overlay .modal h2{
+    padding:22px 20px 8px;
+    font-size:23px;
+  }
+
+  .modal-overlay .modal > p{
+    padding:0 20px 18px;
+  }
+
+  .modal-overlay .modal .field{
+    margin-left:20px;
+    margin-right:20px;
+  }
+
+  .modal-overlay .modal .row{
+    padding:16px 20px 20px;
+    flex-direction:column-reverse;
+  }
+
+  .modal-overlay .modal .row button{
+    width:100%;
+  }
+
+  .modal-overlay .modal > .material-preview{
+    margin-left:20px;
+    margin-right:20px;
+  }
+}
+
+.blue-btn {
+  background: #1976d2 !important;
+  color: white !important;
+}
+
+/* =========================================================
+   CALENDRIER
+   ========================================================= */
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-weekday {
+  text-align: center;
+  font-weight: 700;
+  padding: 10px 4px;
+  background: #f1f3f7;
+  border-radius: 8px;
+}
+
+.calendar-day {
+  min-height: 100px;
+  border: 1px solid #e1e4e8;
+  border-radius: 10px;
+  padding: 8px;
+  background: white;
+}
+
+.calendar-empty {
+  background: #f7f7f7;
+  opacity: .5;
+}
+
+.calendar-today {
+  border: 2px solid #1976d2;
+}
+
+.calendar-day-number {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.calendar-events {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calendar-event {
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+  padding: 5px;
+  text-align: left;
+  cursor: pointer;
+  font-size: 12px;
+  color: white;
+}
+
+.calendar-reunion {
+  background: #1976d2;
+}
+
+.calendar-manifestation {
+  background: #2e8b57;
+}
+
+.calendar-ceremonie {
+  background: #e67e22;
+}
+
+.calendar-amicale {
+  background: #7b3fb5;
+}
+
+.calendar-important {
+  background: #c62828;
+}
+
+.calendar-autre {
+  background: #777;
+}
+
+@media (max-width: 700px) {
+
+  .calendar-grid {
+    gap: 3px;
+  }
+
+  .calendar-day {
+    min-height: 75px;
+    padding: 4px;
+  }
+
+  .calendar-weekday {
+    font-size: 11px;
+    padding: 6px 2px;
+  }
+
+  .calendar-day-number {
+    font-size: 13px;
+  }
+
+  .calendar-event {
+    font-size: 10px;
+    padding: 3px;
+  }
+
+}
+
+/* =========================================================
+   POPUPS / MODALES — CENTRAGE + MOBILE
+   ========================================================= */
+
+#appModal.modal-overlay{
+
+  position: fixed !important;
+
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  width: 100vw !important;
+  height: 100dvh !important;
+
+  display: flex !important;
+
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 20px !important;
+
+  box-sizing: border-box !important;
+
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  z-index: 99999 !important;
+
+}
+
+#appModal.modal-overlay > .modal{
+
+  width: min(900px, 100%) !important;
+
+  max-width: 900px !important;
+
+  max-height: calc(100dvh - 40px) !important;
+
+  margin: auto !important;
+
+  box-sizing: border-box !important;
+
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+
+  -webkit-overflow-scrolling: touch !important;
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px){
+
+  #appModal.modal-overlay{
+
+    align-items: center !important;
+    justify-content: center !important;
+
+    padding: 10px !important;
+
+  }
+
+  #appModal.modal-overlay > .modal{
+
+    width: 100% !important;
+
+    max-width: 100% !important;
+
+    max-height: calc(100dvh - 20px) !important;
+
+    border-radius: 12px !important;
+
+    overflow-y: auto !important;
+
+    -webkit-overflow-scrolling: touch !important;
+
+  }
+
+
+}
+
+   
+}
+
+   
+}
+@keyframes notificationBlink {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.25;
+    transform: scale(1.05);
+  }
+}
+
+/* =====================================================
+   PROPOSITION INSTALLATION APPLICATION
+   ===================================================== */
+
+.install-app-box{
+  position:fixed;
+  left:16px;
+  right:16px;
+  bottom:16px;
+  z-index:99999;
+  display:flex;
+  justify-content:center;
+}
+
+.install-app-box.hidden{
+  display:none;
+}
+
+.install-app-content{
+  width:min(520px,100%);
+  background:#fff;
+  border-radius:18px;
+  padding:16px;
+  box-shadow:0 10px 35px rgba(0,0,0,.25);
+  border:1px solid rgba(0,0,0,.08);
+}
+
+.install-app-icon{
+  display:flex;
+  justify-content:center;
+  margin-bottom:10px;
+}
+
+.install-app-icon img{
+  width:64px;
+  height:64px;
+  object-fit:contain;
+  border-radius:14px;
+}
+
+.install-app-text{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  text-align:center;
+}
+
+.install-app-text strong{
+  font-size:18px;
+}
+
+.install-app-text span{
+  font-size:14px;
+  line-height:1.4;
+  color:#666;
+}
+
+.install-app-actions{
+  display:flex;
+  gap:10px;
+  margin-top:14px;
+}
+
+.install-app-actions button{
+  flex:1;
+}
+
+@media(max-width:500px){
+
+  .install-app-box{
+    left:10px;
+    right:10px;
+    bottom:10px;
+  }
+
+  .install-app-content{
+    padding:14px;
+  }
+
+}
+
+
+
+
+/* =========================================================
+   STYLE 1 — ESPACE MEMBRE
+   NE PAS MODIFIER LE CSS ADMIN EXISTANT
+   ========================================================= */
+
+.member-app{
+  width:100%;
+  max-width:1100px;
+  margin:0 auto;
+  padding:0 0 90px;
+  box-sizing:border-box;
+  font-family:inherit;
+}
+
+.member-app *{
+  box-sizing:border-box;
+}
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.member-hero{
+  position:relative;
+  min-height:310px;
+  border-radius:0 0 28px 28px;
+  overflow:hidden;
+  margin:0 0 18px;
+  background:#111;
+  box-shadow:0 8px 25px rgba(0,0,0,.15);
+}
+
+.member-hero-bg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.member-hero-overlay{
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(0,0,0,.78),
+      rgba(0,0,0,.25) 60%,
+      rgba(181,18,27,.42)
+    );
+}
+
+.member-hero-content{
+  position:relative;
+  z-index:2;
+  min-height:310px;
+  padding:28px;
+  display:flex;
+  align-items:center;
+  gap:22px;
+  color:white;
+}
+
+.member-crest{
+  width:125px;
+  height:125px;
+  min-width:125px;
+  border-radius:50%;
+  background:white;
+  padding:8px;
+  box-shadow:0 8px 25px rgba(0,0,0,.35);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.member-crest img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+}
+
+.member-hero-title{
+  margin:0;
+  color:white !important;
+  font-size:clamp(28px,5vw,48px);
+  line-height:1;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.member-hero-subtitle{
+  margin:7px 0 14px;
+  color:white !important;
+  font-size:clamp(20px,3vw,30px);
+  font-weight:800;
+}
+
+.member-hero-welcome{
+  margin:0;
+  color:rgba(255,255,255,.92);
+  font-size:17px;
+}
+
+/* =========================================================
+   BOUTON NOTIFICATIONS
+   ========================================================= */
+
+.member-notification-button{
+  position:absolute;
+  z-index:3;
+  right:20px;
+  top:20px;
+  width:48px;
+  height:48px;
+  border:0;
+  border-radius:50%;
+  background:white;
+  color:#b5121b;
+  font-size:22px;
+  cursor:pointer;
+  box-shadow:0 5px 18px rgba(0,0,0,.25);
+}
+
+.member-notification-button.has-notification{
+  animation:memberBellPulse 1.2s infinite;
+}
+
+@keyframes memberBellPulse{
+  0%,100%{
+    transform:scale(1);
+  }
+  50%{
+    transform:scale(1.08);
+  }
+}
+
+/* =========================================================
+   ACCUEIL
+   ========================================================= */
+
+.member-welcome-card{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.member-welcome-card h2{
+  margin:0;
+  font-size:25px;
+}
+
+.member-welcome-card p{
+  margin:6px 0 0;
+  color:#666;
+}
+
+/* =========================================================
+   NOTIFICATION ROUGE
+   ========================================================= */
+
+.member-notification-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:18px 20px;
+  margin-bottom:16px;
+  border-radius:20px;
+  background:#b5121b;
+  color:white;
+  cursor:pointer;
+  box-shadow:0 7px 20px rgba(181,18,27,.22);
+}
+
+.member-notification-card:hover{
+  transform:translateY(-1px);
+}
+
+.member-notification-icon{
+  width:48px;
+  height:48px;
+  min-width:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:15px;
+  background:rgba(255,255,255,.15);
+  font-size:24px;
+}
+
+.member-notification-text{
+  flex:1;
+}
+
+.member-notification-text strong{
+  display:block;
+  font-size:17px;
+}
+
+.member-notification-text span{
+  display:block;
+  margin-top:3px;
+  font-size:13px;
+  opacity:.9;
+}
+
+.member-notification-arrow{
+  font-size:25px;
+}
+
+/* =========================================================
+   4 BLOCS
+   ========================================================= */
+
+.member-stat-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:16px;
+}
+
+.member-stat-card{
+  position:relative;
+  min-height:135px;
+  padding:18px;
+  border-radius:20px;
+  background:white;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+  cursor:pointer;
+  overflow:hidden;
+}
+
+.member-stat-card::after{
+  content:"";
+  position:absolute;
+  width:70px;
+  height:70px;
+  right:-25px;
+  bottom:-25px;
+  border-radius:50%;
+  background:rgba(181,18,27,.06);
+}
+
+.member-stat-icon{
+  font-size:27px;
+  margin-bottom:10px;
+}
+
+.member-stat-card h3{
+  margin:0;
+  font-size:17px;
+}
+
+.member-stat-card p{
+  margin:6px 0 0;
+  color:#777;
+  font-size:13px;
+}
+
+.member-stat-number{
+  margin-top:10px;
+  font-size:26px;
+  font-weight:900;
+  color:#b5121b;
+}
+
+/* =========================================================
+   ENGAGEMENT
+   ========================================================= */
+
+.member-engagement{
+  background:white;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:16px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.member-section-title{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:0 0 14px;
+  font-size:20px;
+}
+
+.member-engagement-main{
+  display:flex;
+  align-items:center;
+  gap:18px;
+}
+
+.member-engagement-medal{
+  width:70px;
+  height:70px;
+  min-width:70px;
+  border-radius:20px;
+  background:#fff4d6;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+}
+
+.member-engagement-time{
+  font-size:23px;
+  font-weight:900;
+  color:#b5121b;
+}
+
+/* =========================================================
+   PROCHAINE FESTIVITÉ
+   ========================================================= */
+
+.member-event-card{
+  background:white;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:16px;
+  box-shadow:0 5px 18px rgba(0,0,0,.08);
+}
+
+.member-event-image{
+  width:100%;
+  height:220px;
+  object-fit:cover;
+  display:block;
+}
+
+.member-event-content{
+  padding:18px;
+}
+
+.member-event-content h3{
+  margin:0 0 7px;
+  font-size:21px;
+}
+
+.member-event-content p{
+  margin:5px 0;
+  color:#666;
+}
+
+/* =========================================================
+   AUTRES FONCTIONS
+   ========================================================= */
+
+.member-actions{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+  margin-bottom:16px;
+}
+
+.member-action{
+  background:white;
+  border-radius:18px;
+  padding:17px;
+  box-shadow:0 5px 18px rgba(0,0,0,.07);
+}
+
+.member-action h3{
+  margin:0 0 7px;
+}
+
+.member-action p{
+  color:#666;
+  font-size:14px;
+}
+
+.member-action button{
+  width:100%;
+}
+
+/* =========================================================
+   BUREAU
+   ========================================================= */
+
+.member-bureau{
+  border:2px solid #b5121b;
+}
+
+.member-bureau-label{
+  display:inline-block;
+  padding:5px 9px;
+  margin-bottom:8px;
+  border-radius:999px;
+  background:#b5121b;
+  color:white;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+}
+
+/* =========================================================
+   CAMION
+   ========================================================= */
+
+.member-truck{
+  position:relative;
+  height:230px;
+  margin-top:16px;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 5px 18px rgba(0,0,0,.1);
+}
+
+.member-truck img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.member-truck-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  padding:20px;
+  background:linear-gradient(
+    transparent,
+    rgba(0,0,0,.78)
+  );
+  color:white;
+}
+
+.member-truck-overlay h2{
+  color:white !important;
+  margin:0;
+}
+
+/* =========================================================
+   NAVIGATION BASSE
+   ========================================================= */
+
+.member-bottom-nav{
+  position:fixed;
+  z-index:100;
+  left:50%;
+  bottom:12px;
+  transform:translateX(-50%);
+  width:min(680px,calc(100% - 24px));
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:4px;
+  padding:8px;
+  border-radius:22px;
+  background:rgba(255,255,255,.96);
+  box-shadow:0 8px 30px rgba(0,0,0,.2);
+  backdrop-filter:blur(12px);
+}
+
+.member-bottom-nav button{
+  border:0;
+  background:transparent;
+  padding:8px 4px;
+  border-radius:14px;
+  color:#555;
+  font-size:11px;
+  cursor:pointer;
+}
+
+.member-bottom-nav button span{
+  display:block;
+  font-size:21px;
+  margin-bottom:3px;
+}
+
+.member-bottom-nav button.active{
+  background:#b5121b;
+  color:white;
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:650px){
+
+  .member-app{
+    padding-bottom:95px;
+  }
+
+  .member-hero{
+    min-height:270px;
+    border-radius:0 0 22px 22px;
+  }
+
+  .member-hero-content{
+    min-height:270px;
+    padding:20px;
+    gap:13px;
+    align-items:flex-end;
+  }
+
+  .member-crest{
+    width:82px;
+    height:82px;
+    min-width:82px;
+    padding:5px;
+  }
+
+  .member-hero-title{
+    font-size:27px;
+  }
+
+  .member-hero-subtitle{
+    font-size:19px;
+    margin:3px 0 7px;
+  }
+
+  .member-hero-welcome{
+    font-size:14px;
+  }
+
+  .member-notification-button{
+    top:14px;
+    right:14px;
+    width:42px;
+    height:42px;
+  }
+
+  .member-stat-grid{
+    gap:10px;
+  }
+
+  .member-stat-card{
+    min-height:125px;
+    padding:14px;
+  }
+
+  .member-actions{
+    grid-template-columns:1fr;
+  }
+
+  .member-event-image{
+    height:180px;
+  }
+
+  .member-truck{
+    height:190px;
+  }
+
+  .member-bottom-nav{
+    bottom:8px;
+    width:calc(100% - 14px);
+  }
+
+}
+
+@media(max-width:380px){
+
+  .member-hero-title{
+    font-size:23px;
+  }
+
+  .member-hero-subtitle{
+    font-size:17px;
+  }
+
+  .member-stat-card{
+    min-height:115px;
+  }
+
+  .member-stat-icon{
+    font-size:23px;
+  }
+
+}
+@media (max-width:700px){
+
+  .action-grid{
+    grid-template-columns:80px 110px minmax(0, 2fr) !important;
+    gap:8px !important;
+  }
+
+}
