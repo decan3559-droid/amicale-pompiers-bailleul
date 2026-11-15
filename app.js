@@ -701,7 +701,7 @@ async function registerMemberPhoneNotifications(){
     // =====================================================
 
     const VAPID_PUBLIC_KEY =
-      'BKZ_xge_2-yrS05liFIQGdRQ6meRlLJFjpzUJVi1H_0xwxlE2ITS23BUX832dPA6y5zmcFKs4qWIG6bI6zzvvHU';
+      'BKV5be3L_jdNVAL3pJkxUZubvrbjAM-ZRb4puEMw-oIDA2HsfkvWpviUNeMpuJpln7DHwIunuafdlbnzWWelMuA';
 
 
     // =====================================================
