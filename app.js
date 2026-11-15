@@ -1,5 +1,7 @@
-const SUPABASE_URL="REMPLACER_PAR_URL_SUPABASE_BAILLEUL";
-const SUPABASE_ANON_KEY="REMPLACER_PAR_CLE_PUBLIQUE_SUPABASE_BAILLEUL";
+
+const SUPABASE_URL = "https://hsdyjmwawtajweqfrtlx.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_1kbMMLlBk2QR4JzwgTo2Zw_WIkQxkjg";
+
 const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 let member = null;
 let notificationTimer = null;
