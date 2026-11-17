@@ -32587,40 +32587,27 @@ function openAdminReportsMenu(){
    COMPTES RENDUS PUBLIÉS
    ============================================================ */
 
-function showAdminPublishedReports(){
+
+async function showAdminPublishedReports(){
 
   closeAdminPopup();
 
-
   openAdminPopup(
-
     '📚 Comptes rendus publiés',
-
     `
-
-      <div
-        style="
-          text-align:center;
-          padding:25px 5px;
-        "
-      >
-
-        <div style="font-size:40px;">
-          📚
-        </div>
-
-        <p class="muted">
-          Les comptes rendus publiés seront affichés ici.
+      <div id="adminMeetingReportsList">
+        <p class="muted" style="text-align:center;padding:20px;">
+          ⏳ Chargement des comptes rendus...
         </p>
-
       </div>
-
     `
-
   );
 
-}
+  // Charge les comptes rendus publiés
+  // et permet de les consulter, modifier et supprimer.
+  await loadAdminMeetingReports();
 
+}
 
 /* ============================================================
    MAINTENANCE
