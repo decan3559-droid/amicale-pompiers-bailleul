@@ -12820,7 +12820,8 @@ async function savePoll(){
       .insert({
         title:title,
         description:'',
-        multiple_choices:false,
+       multiple_choices:
+  $('pollMultipleChoice')?.checked || false,
         anonymous:false,
         allow_change_vote:false,
         active:true,
