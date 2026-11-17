@@ -12742,6 +12742,7 @@ function newPoll(){
 
     <div class="row" style="margin-top:15px;gap:8px;">
 
+function newPoll(){
       <button
         type="button"
         class="primary"
