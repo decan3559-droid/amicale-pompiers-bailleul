@@ -11929,9 +11929,16 @@ async function savePollResponse(pollId, multipleChoices){
   }
 
 }
+
 async function showMyPollResponses(){
   try{
-    if(!member?.id){
+
+    const {data:currentMemberId,error:memberError} =
+      await db.rpc('current_member_id');
+
+    if(memberError) throw memberError;
+
+    if(!currentMemberId){
       alert('Vous devez être connecté.');
       return;
     }
@@ -11946,21 +11953,23 @@ async function showMyPollResponses(){
         polls(title),
         poll_options(option_text)
       `)
-      .eq('member_id',member.id)
+      .eq('member_id',currentMemberId)
       .order('created_at',{ascending:false});
 
-    if(error)throw error;
+    if(error) throw error;
 
     const list=responses||[];
 
     let html='<h2>📊 Mes réponses</h2>';
 
     if(!list.length){
+
       html+=`
         <div class="card" style="margin-top:15px;">
           <p>📭 Vous n'avez encore répondu à aucun sondage.</p>
         </div>
       `;
+
     }else{
 
       for(const response of list){
@@ -12000,8 +12009,10 @@ async function showMyPollResponses(){
     openModal(html);
 
   }catch(error){
+
     console.error('ERREUR MES RÉPONSES :',error);
     alert(error.message||'Impossible de charger vos réponses.');
+
   }
 }
 
@@ -12015,17 +12026,8 @@ async function deleteMyPollResponse(responseId){
 
   try{
 
-    if(!member?.id){
-      alert('Vous devez être connecté.');
-      return;
-    }
-
-    // Récupérer le même identifiant membre
-    // que celui utilisé lors de l'enregistrement du vote
-    const {
-      data:currentMemberId,
-      error:memberError
-    } = await db.rpc('current_member_id');
+    const {data:currentMemberId,error:memberError} =
+      await db.rpc('current_member_id');
 
     if(memberError) throw memberError;
 
@@ -12034,7 +12036,6 @@ async function deleteMyPollResponse(responseId){
       return;
     }
 
-    // Supprimer uniquement la réponse de ce membre
     const {data,error}=await db
       .from('poll_responses')
       .delete()
@@ -12044,12 +12045,8 @@ async function deleteMyPollResponse(responseId){
 
     if(error) throw error;
 
-    // Vérifier que Supabase a réellement supprimé une ligne
     if(!data || data.length===0){
-      alert(
-        'La réponse n’a pas été supprimée. ' +
-        'Vérifiez les autorisations de suppression dans Supabase.'
-      );
+      alert('La suppression a été refusée. Vérifiez les autorisations Supabase.');
       return;
     }
 
@@ -12061,10 +12058,8 @@ async function deleteMyPollResponse(responseId){
 
     console.error('ERREUR SUPPRESSION RÉPONSE :',error);
 
-    alert(
-      error.message||
-      'Impossible de supprimer votre réponse.'
-    );
+    alert(error.message||'Impossible de supprimer votre réponse.');
+
   }
 }
 
