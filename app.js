@@ -12698,6 +12698,7 @@ if(calendarAssignmentsError){
   }
 }
 
+
 function newPoll(){
   openModal(`
     <h2>📊 Créer un sondage</h2>
@@ -12740,9 +12741,33 @@ function newPoll(){
       </button>
     </div>
 
+    <div class="field" style="margin-top:18px;">
+      <label>Nombre de réponses autorisées</label>
+
+      <label style="display:flex;align-items:center;gap:10px;margin-top:12px;">
+        <input
+          type="radio"
+          name="pollResponseMode"
+          id="pollSingleChoice"
+          value="false"
+          checked
+        >
+        Une seule réponse
+      </label>
+
+      <label style="display:flex;align-items:center;gap:10px;margin-top:10px;">
+        <input
+          type="radio"
+          name="pollResponseMode"
+          id="pollMultipleChoice"
+          value="true"
+        >
+        Plusieurs réponses
+      </label>
+    </div>
+
     <div class="row" style="margin-top:15px;gap:8px;">
 
-function newPoll(){
       <button
         type="button"
         class="primary"
@@ -12792,6 +12817,7 @@ function addPollOption(){
   container.appendChild(div);
 }
 
+
 async function savePoll(){
   try{
 
@@ -12815,13 +12841,16 @@ async function savePoll(){
       return;
     }
 
+    // Récupération du choix unique ou multiple
+    const multipleChoices =
+      $('pollMultipleChoice')?.checked || false;
+
     const {data:poll,error:pollError}=await db
       .from('polls')
       .insert({
         title:title,
         description:'',
-       multiple_choices:
-  $('pollMultipleChoice')?.checked || false,
+        multiple_choices:multipleChoices,
         anonymous:false,
         allow_change_vote:false,
         active:true,
@@ -12842,74 +12871,42 @@ async function savePoll(){
       .from('poll_options')
       .insert(optionRows);
 
-   if(optionsError)throw optionsError;
+    if(optionsError)throw optionsError;
 
+    // NOTIFICATION PUSH — NOUVEAU SONDAGE
 
-// =====================================================
-// 🔔 NOTIFICATION PUSH — NOUVEAU SONDAGE
-// =====================================================
+    try{
 
-try{
+      const {data:pushData,error:pushError} =
+        await db.functions.invoke('send-push', {
+          body: {
+            all_members:true,
+            title:'📊 Nouveau sondage',
+            message:`Un nouveau sondage est disponible : ${title}`
+          }
+        });
 
-  const { data: pushData, error: pushError } =
-    await db.functions.invoke('send-push', {
-
-      body: {
-
-        all_members: true,
-
-        title:
-          '📊 Nouveau sondage',
-
-        message:
-          `Un nouveau sondage est disponible : ${title}`
-
+      if(pushError){
+        console.error('❌ ERREUR PUSH SONDAGE :',pushError);
+      }else{
+        console.log('✅ PUSH SONDAGE ENVOYÉ :',pushData);
       }
 
-    });
+    }catch(pushError){
 
+      console.error('❌ ERREUR PUSH SONDAGE :',pushError);
 
-  if(pushError){
+    }
 
-    console.error(
-      '❌ ERREUR PUSH SONDAGE :',
-      pushError
-    );
+    closeModal();
 
-  }else{
+    alert('✅ Sondage créé.');
 
-    console.log(
-      '✅ PUSH SONDAGE ENVOYÉ :',
-      pushData
-    );
-
-  }
-
-}catch(pushError){
-
-  // Une erreur de notification ne doit
-  // jamais empêcher la création du sondage.
-
-  console.error(
-    '❌ ERREUR PUSH SONDAGE :',
-    pushError
-  );
-
-}
-
-
-closeModal();
-
-alert('✅ Sondage créé.');
-
-await renderAdmin();
+    await renderAdmin();
 
   }catch(error){
 
-    console.error(
-      'ERREUR CRÉATION SONDAGE :',
-      error
-    );
+    console.error('ERREUR CRÉATION SONDAGE :',error);
 
     alert(
       error.message||
