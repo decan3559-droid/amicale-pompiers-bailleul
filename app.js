@@ -12006,6 +12006,7 @@ async function showMyPollResponses(){
 }
 
 
+
 async function deleteMyPollResponse(responseId){
 
   if(!confirm('Voulez-vous vraiment supprimer cette réponse ?')){
@@ -12014,17 +12015,47 @@ async function deleteMyPollResponse(responseId){
 
   try{
 
-    const {error}=await db
+    if(!member?.id){
+      alert('Vous devez être connecté.');
+      return;
+    }
+
+    // Récupérer le même identifiant membre
+    // que celui utilisé lors de l'enregistrement du vote
+    const {
+      data:currentMemberId,
+      error:memberError
+    } = await db.rpc('current_member_id');
+
+    if(memberError) throw memberError;
+
+    if(!currentMemberId){
+      alert('Impossible de retrouver votre compte.');
+      return;
+    }
+
+    // Supprimer uniquement la réponse de ce membre
+    const {data,error}=await db
       .from('poll_responses')
       .delete()
       .eq('id',responseId)
-      .eq('member_id',member.id);
+      .eq('member_id',currentMemberId)
+      .select('id');
 
-    if(error)throw error;
+    if(error) throw error;
 
-    alert('✅ Votre réponse a été supprimée.');
+    // Vérifier que Supabase a réellement supprimé une ligne
+    if(!data || data.length===0){
+      alert(
+        'La réponse n’a pas été supprimée. ' +
+        'Vérifiez les autorisations de suppression dans Supabase.'
+      );
+      return;
+    }
 
-    showMyPollResponses();
+    alert('✅ Votre réponse a bien été supprimée.');
+
+    await showMyPollResponses();
 
   }catch(error){
 
@@ -12036,6 +12067,7 @@ async function deleteMyPollResponse(responseId){
     );
   }
 }
+
 
 async function showMaterials(){
   try{
