@@ -32679,10 +32679,10 @@ function openAdminMaintenanceMenu(){
 <button
   type="button"
   class="admin-menu-row"
-  onclick="
-    openAdminEmailSettings();
-    closeAdminPopup();
-  "
+ onclick="
+  closeAdminPopup();
+  openAdminEmailSettings();
+"
 >
 
   <div class="admin-menu-row-icon">
