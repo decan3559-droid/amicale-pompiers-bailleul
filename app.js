@@ -6320,33 +6320,30 @@ async function sendAdminEmailNotification(
   message,
   sender
 ){
-  try{
-
-    const { data, error } = await db.functions.invoke(
-      'send-admin-email',
-      {
-        body:{
-          type: type || 'message',
-          title: title || 'Notification de l’amicale',
-          message: message || '',
-          memberName: sender || 'Application Bailleul'
-        }
+  const { data, error } = await db.functions.invoke(
+    'send-admin-email',
+    {
+      body: {
+        type: type || 'message',
+        title: title || 'Notification de l’amicale',
+        message: message || '',
+        memberName: sender || 'Application Bailleul'
       }
-    );
+    }
+  );
 
-    if(error) throw error;
-
-    console.log('📧 Notification e-mail envoyée.', data);
-
-    return true;
-
-  }catch(error){
-
-    console.error('ERREUR ENVOI EMAIL ADMIN :', error);
-
-    return false;
-
+  if(error){
+    console.error('ERREUR FONCTION EMAIL :', error);
+    throw error;
   }
+
+  console.log('RÉPONSE FONCTION EMAIL :', data);
+
+  if(data?.error){
+    throw new Error(data.error);
+  }
+
+  return true;
 }
 
 async function showMemberProfile(){
