@@ -6320,10 +6320,33 @@ async function sendAdminEmailNotification(
   message,
   sender
 ){
-  // Envoi d'e-mails désactivé pour le clone de Bailleul.
-  // Les notifications internes et push restent actives.
-  console.info('Notification e-mail ignorée (fonction désactivée).', type || '');
-  return false;
+  try{
+
+    const { data, error } = await db.functions.invoke(
+      'send-admin-email',
+      {
+        body:{
+          type: type || 'message',
+          title: title || 'Notification de l’amicale',
+          message: message || '',
+          memberName: sender || 'Application Bailleul'
+        }
+      }
+    );
+
+    if(error) throw error;
+
+    console.log('📧 Notification e-mail envoyée.', data);
+
+    return true;
+
+  }catch(error){
+
+    console.error('ERREUR ENVOI EMAIL ADMIN :', error);
+
+    return false;
+
+  }
 }
 
 async function showMemberProfile(){
@@ -32653,6 +32676,36 @@ function openAdminMaintenanceMenu(){
 
       <div class="admin-menu-list">
 
+<button
+  type="button"
+  class="admin-menu-row"
+  onclick="
+    openAdminEmailSettings();
+    closeAdminPopup();
+  "
+>
+
+  <div class="admin-menu-row-icon">
+    ✉️
+  </div>
+
+  <div class="admin-menu-row-content">
+
+    <div class="admin-menu-row-title">
+      Notifications e-mail
+    </div>
+
+    <div class="admin-menu-row-text">
+      Modifier l'adresse de réception et envoyer un test
+    </div>
+
+  </div>
+
+  <div class="admin-menu-arrow">
+    ›
+  </div>
+
+</button>
 
         <button
           type="button"
@@ -32864,7 +32917,185 @@ function openAdminMaintenanceMenu(){
 
 }
 
+/* ============================================================
+   📧 PARAMÈTRES DES NOTIFICATIONS E-MAIL
+   ============================================================ */
 
+async function openAdminEmailSettings(){
+
+  if(String(member?.role || '').toLowerCase() !== 'admin'){
+    alert('Accès réservé à l’administrateur.');
+    return;
+  }
+
+  openAdminPopup(
+    '✉️ Notifications e-mail',
+    `
+      <div style="padding:15px;">
+
+        <p>
+          Les notifications de l'application seront envoyées à cette adresse.
+          Vous pourrez la modifier à tout moment.
+        </p>
+
+        <label for="adminNotificationEmail">
+          Adresse e-mail de réception
+        </label>
+
+        <input
+          id="adminNotificationEmail"
+          type="email"
+          placeholder="exemple@gmail.com"
+          style="width:100%;margin:10px 0;padding:12px;"
+        >
+
+        <button
+          type="button"
+          onclick="saveAdminNotificationEmail()"
+        >
+          💾 Enregistrer
+        </button>
+
+        <button
+          type="button"
+          onclick="sendAdminEmailTest()"
+        >
+          📨 Envoyer un e-mail de test
+        </button>
+
+        <p id="adminNotificationEmailStatus"></p>
+
+      </div>
+    `
+  );
+
+  try{
+
+    const {data,error} = await db
+      .from('system_settings')
+      .select('admin_notification_email')
+      .eq('id','global')
+      .single();
+
+    if(error) throw error;
+
+    const input = $('adminNotificationEmail');
+
+    if(input){
+      input.value = data?.admin_notification_email || '';
+    }
+
+  }catch(error){
+
+    console.error(error);
+
+    alert('Impossible de charger l’adresse e-mail.');
+
+  }
+
+}
+
+
+async function saveAdminNotificationEmail(){
+
+  if(String(member?.role || '').toLowerCase() !== 'admin'){
+    alert('Accès réservé à l’administrateur.');
+    return;
+  }
+
+  const input = $('adminNotificationEmail');
+
+  const email = input?.value.trim() || '';
+
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert('Veuillez saisir une adresse e-mail valide.');
+    input?.focus();
+    return;
+  }
+
+  try{
+
+    const {error} = await db
+      .from('system_settings')
+      .update({
+        admin_notification_email: email,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id','global')
+      .select();
+
+    if(error) throw error;
+
+    $('adminNotificationEmailStatus').textContent =
+      'Adresse e-mail enregistrée : ' + email;
+
+    alert('✅ Adresse de réception mise à jour.');
+
+  }catch(error){
+
+    console.error(error);
+
+    alert('Impossible d’enregistrer l’adresse e-mail : ' + error.message);
+
+  }
+
+}
+
+
+async function sendAdminEmailTest(){
+
+  const input = $('adminNotificationEmail');
+
+  const email = input?.value.trim() || '';
+
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    alert('Veuillez saisir une adresse e-mail valide.');
+    input?.focus();
+    return;
+  }
+
+  try{
+
+    // Enregistrer l'adresse avant le test
+    const {error:saveError} = await db
+      .from('system_settings')
+      .update({
+        admin_notification_email: email,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id','global')
+      .select();
+
+    if(saveError) throw saveError;
+
+    const sent = await sendAdminEmailNotification(
+      'message',
+      'Test des notifications e-mail',
+      'Ceci est un e-mail de test envoyé depuis l’application de l’Amicale de Bailleul.',
+      'Administrateur'
+    );
+
+    if(!sent){
+      throw new Error('La fonction d’envoi n’a pas confirmé l’envoi.');
+    }
+
+    alert('✅ E-mail de test envoyé à ' + email + '.');
+
+  }catch(error){
+
+    console.error(error);
+
+    alert('❌ Échec du test e-mail : ' + error.message);
+
+  }
+
+}
+
+
+// Rendre les fonctions accessibles aux boutons HTML
+window.openAdminEmailSettings = openAdminEmailSettings;
+window.saveAdminNotificationEmail = saveAdminNotificationEmail;
+window.sendAdminEmailTest = sendAdminEmailTest;
 /* ============================================================
    SECTION IDÉES
    ============================================================ */
